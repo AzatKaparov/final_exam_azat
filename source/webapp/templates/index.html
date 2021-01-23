@@ -3,6 +3,12 @@
 
 {% block title %}Main{% endblock %}
 
+{% block menu %}
+<li class="nav-item active">
+    <a class="nav-link" href="{% url "accounts:detail" request.user.pk %}">Моя страница <span class="sr-only"></span></a>
+</li>
+{% endblock %}
+
 {% block content %}
 {% include "partial/messages.html" %}
 <h1 id="main-center" class="">Список пользователей</h1>
@@ -21,11 +27,13 @@
                 <h5 class="card-title">{{ friend.first_name }} {{ friend.last_name }}</h5>
                 <hr/>
                 <a href="{% url "accounts:detail" friend.pk %}" class="btn btn-primary mb-1">Подробнее</a>
-                {% if friend not in request.user.profile.friends.all %}
+                {% if request.user.is_authenticated %}
+                    {% if friend not in request.user.profile.friends.all %}
                 <a href="{% url "api:add_friend" friend.pk %}" class="btn btn-primary addFriend">Добавить в друзья</a>
                 {% else %}
                 <a href="{% url "api:remove_friend" friend.pk %}" class="btn btn-danger removeFriend">Удалить из друзей</a>
                 {% endif %}
+                    {% endif %}
             </div>
         </div>
     </div>

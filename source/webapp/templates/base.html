@@ -30,9 +30,6 @@
         <li class="nav-item active">
         <a class="nav-link" href="{% url "accounts:logout" %}">Выйти <span class="sr-only"></span></a>
       </li>
-        <li class="nav-item active">
-        <a class="nav-link" href="{% url "accounts:detail" request.user.pk %}">Моя страница <span class="sr-only"></span></a>
-      </li>
         {% endif %}
     {% block menu %}
 

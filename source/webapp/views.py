@@ -8,10 +8,10 @@ from django.contrib.auth.models import User
 class IndexView(ListView):
     template_name = 'index.html'
     context_object_name = 'friends'
-    paginate_by = 10
+    paginate_by = 4
     paginate_orphans = 0
     model = User
-    ordering = ['username']
+    ordering = ['-date_joined']
 
     def get_queryset(self):
         data = super().get_queryset()

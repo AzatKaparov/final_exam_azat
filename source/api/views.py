@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -14,8 +15,7 @@ def get_token_view(request, *args, **kwargs):
     return HttpResponseNotAllowed('Only GET request are allowed')
 
 
-class AddFriendView(APIView):
-    permission_classes = [IsAuthenticated]
+class AddFriendView(APIView, LoginRequiredMixin):
     def post(self, request, *args, **kwargs):
         user = get_object_or_404(User, pk=kwargs['pk'])
         if user:
@@ -25,8 +25,7 @@ class AddFriendView(APIView):
             HttpResponseNotFound()
 
 
-class RemoveFriendView(APIView):
-    permission_classes = [IsAuthenticated]
+class RemoveFriendView(APIView, LoginRequiredMixin):
     def post(self, request, *args, **kwargs):
         user = get_object_or_404(User, pk=kwargs['pk'])
         if user:
