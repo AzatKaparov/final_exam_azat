@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}Main{% endblock %}
+
+{% block content %}
+{% include "partial/messages.html" %}
+<h1 id="main-center" class="">Список пользователей</h1>
+{% include 'partial/pagination.html' %}
+<div class="row">
+{% for friend in friends %}
+    <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+        <div class="card my-4" style="width: 18rem">
+        {% if request.user == friend %}
+
+        {% endif %}
+            {% if friend.profile.avatar %}
+            <img src="{{ friend.profile.avatar.url }}" width="250" height="250">
+            {% else %}
+            <img src="{% static "pics/заглушка.jpg" %}" width="250" height="250">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ friend.first_name }} {{ friend.last_name }}</h5>
+                <hr/>
+                <a href="#" class="btn btn-primary mb-1">Подробнее</a>
+                <a href="#" class="btn btn-primary">Добавить в друзья</a>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+</div>
+{% endblock %}
