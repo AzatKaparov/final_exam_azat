@@ -51,7 +51,7 @@ class Profile(models.Model):
                                               on_delete=models.CASCADE, verbose_name='Пользователь')
     birth_date = models.DateField(null=True, blank=True, verbose_name='Дата рождения')
     avatar = models.ImageField(null=True, blank=True, upload_to='user_pics', verbose_name='Аватар')
-    friends = models.ManyToManyField(get_user_model(), related_name="users", verbose_name="Друзья", null=True, blank=True)
+    friends = models.ManyToManyField(get_user_model(), related_name="users", verbose_name="Друзья", blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
