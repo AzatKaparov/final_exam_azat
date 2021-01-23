@@ -4,6 +4,11 @@ from uuid import uuid4
 from django.contrib.auth.models import AbstractUser
 from django.utils.timezone import now
 from datetime import timedelta
+from django.contrib.auth.models import User
+
+
+User._meta.get_field('first_name').blank = False
+User._meta.get_field('last_name').blank = False
 
 
 TOKEN_TYPE_REGISTER = 'register'
