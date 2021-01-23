@@ -9,24 +9,30 @@
 {% include 'partial/pagination.html' %}
 <div class="row">
 {% for friend in friends %}
+    {% if friend != request.user %}
     <div class="col-12 col-sm-12 col-md-6 col-lg-6">
         <div class="card my-4" style="width: 18rem">
-        {% if request.user == friend %}
-
-        {% endif %}
             {% if friend.profile.avatar %}
-            <img src="{{ friend.profile.avatar.url }}" width="250" height="250">
+            <img src="{{ friend.profile.avatar.url }}" width="400" height="400">
             {% else %}
-            <img src="{% static "pics/заглушка.jpg" %}" width="250" height="250">
+            <img src="{% static "pics/заглушка.jpg" %}" width="400" height="400">
             {% endif %}
             <div class="card-body">
                 <h5 class="card-title">{{ friend.first_name }} {{ friend.last_name }}</h5>
                 <hr/>
-                <a href="#" class="btn btn-primary mb-1">Подробнее</a>
-                <a href="#" class="btn btn-primary">Добавить в друзья</a>
+                <a href="{% url "accounts:detail" friend.pk %}" class="btn btn-primary mb-1">Подробнее</a>
+                {% if friend not in request.user.profile.friends.all %}
+                <a href="{% url "api:add_friend" friend.pk %}" class="btn btn-primary addFriend">Добавить в друзья</a>
+                {% else %}
+                <a href="{% url "api:remove_friend" friend.pk %}" class="btn btn-danger removeFriend">Удалить из друзей</a>
+                {% endif %}
             </div>
         </div>
     </div>
+    {% endif %}
 {% endfor %}
 </div>
+
+<script type="application/javascript" src="{% static 'js/main.js' %}"></script>
+<script type="application/javascript" src="{% static 'js/api_client.js' %}"></script>
 {% endblock %}

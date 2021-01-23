@@ -1,11 +1,16 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 
 {% block title %}Пользователь{% endblock %}
 
 {% block menu %}
     {% if request.user == user_obj %}
-        <li><a href="{% url 'accounts:change' user_obj.pk %}">Редактировать</a></li>
-        <li><a href="{% url "accounts:password_change" %}">Смена пароля</a></li>
+    <li class="nav-item active">
+        <a class="nav-link" href="{% url "accounts:change" user_obj.pk %}">Редактировать <span class="sr-only"></span></a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" href="{% url "accounts:password_change" %}">Смена пароля <span class="sr-only"></span></a>
+    </li>
     {% endif %}
 {% endblock %}
 
@@ -14,12 +19,26 @@
     {% if user_obj.profile.avatar %}
         <img class="avatar" src="{{ user_obj.profile.avatar.url }}" width="250" height="250" alt="user picture">
     {% endif %}
+    {% if user_obj != request.user %}
+        {% if user_obj not in request.user.profile.friends.all %}
+    <a href="{% url "api:add_friend" user_obj.pk %}" class="btn btn-primary addFriend">Добавить в друзья</a>
+    {% else %}
+    <a href="{% url "api:remove_friend" user_obj.pk %}" class="btn btn-danger btn-sm removeFriend">Удалить из друзей</a>
+    {% endif %}
+    {% endif %}
     <p>Имя пользователя: {{ user_obj.username }}</p>
     <p>Имя: {{ user_obj.first_name }}</p>
     <p>Фамилия: {{ user_obj.last_name }}</p>
     <p>Дата рождения: {{ user_obj.profile.birth_date|date:'d.m.Y' }}</p>
     <p>Почта: {{ user_obj.email }}</p>
 
-{#    <h2 class="text-center clear">Статьи автора:</h2>#}
-{#    {% include 'partial/article_list.html' %}#}
+    <h2 class="text-center clear">Друзья:</h2>
+    {% for friend in user_obj.profile.friends.all %}
+        <a href="{% url "accounts:detail" friend.pk %}">{{ friend.first_name }} {{ friend.last_name }}</a>
+            <a href="{% url "api:remove_friend" friend.pk %}" class="btn btn-danger btn-sm removeFriend mb-4">Удалить из друзей</a>
+         <br/>
+    {% endfor %}
+
+<script type="application/javascript" src="{% static 'js/main.js' %}"></script>
+<script type="application/javascript" src="{% static 'js/api_client.js' %}"></script>
 {% endblock %}

@@ -9,7 +9,6 @@ from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import View, FormView, DetailView, CreateView, UpdateView
 from django.conf import settings
-
 from accounts.forms import MyUserCreationForm, UserChangeForm, ProfileChangeForm, \
     PasswordChangeForm, PasswordResetEmailForm, PasswordResetForm
 from .models import AuthToken, Profile
